@@ -4,12 +4,12 @@
     </header>
 </template>
 <script>
-export default {
-  data () {php
-    return {
-      transitionName: 'slide-left',
-      pageTitle: 'Navigation'
-    }
-  }
-};
+    export default {
+        data () {
+            return {
+                transitionName: 'slide-left',
+                pageTitle: 'Home'
+            }
+        }
+    };
 </script>

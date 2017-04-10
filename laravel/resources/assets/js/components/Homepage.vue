@@ -22,5 +22,4 @@ export default {
     }
   }
 };
-console.log('terwerewrwest');
 </script>

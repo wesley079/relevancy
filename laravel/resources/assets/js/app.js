@@ -1,7 +1,9 @@
 import Vue from 'vue';
 
 import VueRouter from 'vue-router';
-import Homepage from './components/homepage.vue';
+Vue.use(VueRouter);
+import Homepage from './components/Homepage.vue';
+import Navigation from './components/Navigation.vue';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -17,7 +19,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
 
 const router = new VueRouter({
     mode: 'history',
@@ -30,22 +31,19 @@ const router = new VueRouter({
     ]
 });
 
-router.afterEach((to, from) => {
-    console.log(to);
-});
 
 new Vue({
     components: {
-        Navigation, PageFooter
+        Navigation
     },
     router,
     template: `
-   <main id="app">
+   <div id="app">
      <navigation></navigation>
+     
       <transition name="bounce" mode="out-in">
-       <router-view id="page" class="view"></router-view>
+            <router-view id="page" class="view"></router-view> 
      </transition>
-     <page-footer></page-footer>
-   </main>
+   </div>
  `
 }).$mount('#app');
