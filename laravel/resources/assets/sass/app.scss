@@ -7,3 +7,45 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.list-horizontal{
+  float: left;
+}
+
+.list-horizontal li{
+  cursor: pointer;
+  float: left;
+  position: relative;
+  padding: 5px;
+  margin: 8px;
+  list-style:none;
+}
+
+.list-horizontal li:hover{
+  font-weight: bold;
+  border-bottom:1px solid lightgreen;
+}
+.option-list p{
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
+.option-list div.item{
+  height: 200px;
+  background-color: gray;
+  padding: 12px;
+  box-sizing: border-box;
+  color: white;
+  font-size: 1.5em;
+  border: 12px solid white;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.option-list div.item:hover{
+  transform: scale(1.02);
+  padding: 6px;
+  border: 6px solid white;
+  z-index: 999;
+  transition: 0.9s;
+}

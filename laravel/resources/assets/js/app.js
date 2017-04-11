@@ -4,6 +4,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import Homepage from './components/Homepage.vue';
 import Navigation from './components/Navigation.vue';
+import Music from './components/Music.vue';
+import { Relevancy } from './relevancy-tracking.js';
+
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -19,7 +22,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
 const router = new VueRouter({
     mode: 'history',
     base: __dirname,
@@ -28,6 +30,10 @@ const router = new VueRouter({
             path: '',
             component: Homepage
         },
+        {
+            path: '/music',
+            component: Music
+        }
     ]
 });
 
@@ -47,3 +53,8 @@ new Vue({
    </div>
  `
 }).$mount('#app');
+
+window.Relevancy = new Relevancy();
+
+
+console.log(window.Relevancy.test);
