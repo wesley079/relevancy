@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
 import VueRouter from 'vue-router';
+import Axios from 'axios';
 Vue.use(VueRouter);
 import Homepage from './components/Homepage.vue';
 import Navigation from './components/Navigation.vue';
@@ -21,6 +22,7 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+window.Relevancy = new Relevancy();
 
 const router = new VueRouter({
     mode: 'history',
@@ -32,11 +34,10 @@ const router = new VueRouter({
         },
         {
             path: '/music',
-            component: Music
+            component: Music,
         }
     ]
 });
-
 
 new Vue({
     components: {
@@ -54,7 +55,3 @@ new Vue({
  `
 }).$mount('#app');
 
-window.Relevancy = new Relevancy();
-
-
-console.log(window.Relevancy.test);

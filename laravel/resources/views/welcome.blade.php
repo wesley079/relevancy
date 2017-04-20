@@ -6,6 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Home</title>
+        <script>
+            window.Laravel = <?php echo json_encode([
+                'csrfToken'         => csrf_token(),
+            ]); ?>
+        </script>
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">

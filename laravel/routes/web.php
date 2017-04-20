@@ -19,3 +19,11 @@ Route::get('/', function () {
 Route::get('/music', function () {
     return view('welcome');
 });
+
+route::get('/getRelevancy', 'DataController@getRelevancy');
+route::get('/postRelevancy', 'DataController@postRelevancy');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
