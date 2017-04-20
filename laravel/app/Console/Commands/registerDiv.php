@@ -2,17 +2,21 @@
 
 namespace App\Console\Commands;
 
-use App\Relevancy;
 use Illuminate\Console\Command;
+use DB;
 
-class relevancyReset extends Command
+
+class registerDiv extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'relevancy:reset';
+    protected $signature = 'relevancy:register
+                        {id : ID used for the div you want to register}
+                        {page : Page name where this DIV will take place}
+                        ';
 
     /**
      * The console command description.
@@ -38,6 +42,8 @@ class relevancyReset extends Command
      */
     public function handle()
     {
-        Relevancy::truncate();
+        //get arguments
+        $divID  = $this->argument('id');
+        $page   = $this->argument('page');
     }
 }

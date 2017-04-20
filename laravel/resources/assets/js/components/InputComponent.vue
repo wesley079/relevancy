@@ -1,7 +1,7 @@
 <template>
-    <div id="styles" class="row option-list wesleytracker" >
-    <div class="col-xs-6 item">Funk</div>
-    <div class="col-xs-6 item">Soul</div>
+    <div id="music_styles" class="row option-list relevancy-tracker" >
+        <div class="col-xs-6 item">Rock</div>
+        <div class="col-xs-6 item">Metal</div>
     </div>
 </template>
 

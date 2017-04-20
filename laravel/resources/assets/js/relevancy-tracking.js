@@ -11,7 +11,7 @@ class Relevancy{
                 writeRelevancyNumber();
             }
         }, 3000);
-        let matches = document.body.querySelectorAll('.wesleytracker');
+        let matches = document.body.querySelectorAll('.relevancy-tracker');
 
 
         matches.forEach(function (value) {
@@ -26,7 +26,7 @@ class Relevancy{
     }
 
     eventListeners(){
-        let matches = document.body.querySelectorAll('.wesleytracker');
+        let matches = document.body.querySelectorAll('.relevancy-tracker');
         trackedDivs = [];
 
         matches.forEach(function (value) {
@@ -39,12 +39,12 @@ class Relevancy{
     }
 
     updateEventListeners(){
-        let matches = document.body.querySelectorAll('.wesleytracker');
+        let matches = document.body.querySelectorAll('.relevancy-tracker');
         trackedDivs = [];
         let that = this;
 
         let domCheck = setInterval(function(){
-            let mat = document.body.querySelectorAll('.wesleytracker');
+            let mat = document.body.querySelectorAll('.relevancy-tracker');
             if(mat.length > 0){
                 that.eventListeners();
                 clearInterval(domCheck);

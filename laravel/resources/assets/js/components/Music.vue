@@ -1,16 +1,30 @@
 <template>
     <div class="container">
-        <h1>title</h1>
+        <h1>Music page</h1>
         <tracked-divs></tracked-divs>
     </div>
 </template>
 
 <script>
     let itemArray = [];
-    itemArray["submenuw"] = '<div id="submenuw" class="row wesleytracker"><h1>Browse</h1><ul class="list-horizontal"><li>Overview</li><li>Charts</li><li>Genres & Moods</li></ul></div>';
-    itemArray["featured"] = '<div id="featured" class="row wesleytracker option-list"><p class="col-xs-12">De beste opties voor een mooie ochtend</p><div class="row"><div class="col-xs-4 item">Optie 1</div><div class="col-xs-4 item">Optie 2</div><div class="col-xs-4 item">Optie 3</div></div></div>';
-    itemArray["styles"] = '<div id="styles" class="row option-list wesleytracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>';
-
+    itemArray.push(
+        {
+            'name': 'submenuw',
+            'handicap': 2.5,
+            'html': '<div id="submenuw" class="row relevancy-tracker"><h1>Browse</h1><ul class="list-horizontal"><li>Overview</li><li>Charts</li><li>Genres & Moods</li></ul></div>'
+    });
+    itemArray.push(
+        {
+            'name': 'featured',
+            'handicap': 1,
+            'html': '<div id="featured" class="row relevancy-tracker option-list"><p class="col-xs-12">De beste opties voor een mooie ochtend</p><div class="row"><div class="col-xs-4 item">Optie 1</div><div class="col-xs-4 item">Optie 2</div><div class="col-xs-4 item">Optie 3</div></div></div>'
+        });
+    itemArray.push(
+        {
+            'name': 'styles',
+            'handicap': 1.5,
+            'html': '<div id="styles" class="row option-list relevancy-tracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>'
+        });
 
 
     import Vue from 'vue';

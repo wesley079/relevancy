@@ -21579,9 +21579,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 var itemArray = [];
-itemArray["submenuw"] = '<div id="submenuw" class="row wesleytracker"><h1>Browse</h1><ul class="list-horizontal"><li>Overview</li><li>Charts</li><li>Genres & Moods</li></ul></div>';
-itemArray["featured"] = '<div id="featured" class="row wesleytracker option-list"><p class="col-xs-12">De beste opties voor een mooie ochtend</p><div class="row"><div class="col-xs-4 item">Optie 1</div><div class="col-xs-4 item">Optie 2</div><div class="col-xs-4 item">Optie 3</div></div></div>';
-itemArray["styles"] = '<div id="styles" class="row option-list wesleytracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>';
+itemArray.push({
+    'name': 'submenuw',
+    'handicap': 2.5,
+    'html': '<div id="submenuw" class="row relevancy-tracker"><h1>Browse</h1><ul class="list-horizontal"><li>Overview</li><li>Charts</li><li>Genres & Moods</li></ul></div>'
+});
+itemArray.push({
+    'name': 'featured',
+    'handicap': 1,
+    'html': '<div id="featured" class="row relevancy-tracker option-list"><p class="col-xs-12">De beste opties voor een mooie ochtend</p><div class="row"><div class="col-xs-4 item">Optie 1</div><div class="col-xs-4 item">Optie 2</div><div class="col-xs-4 item">Optie 3</div></div></div>'
+});
+itemArray.push({
+    'name': 'styles',
+    'handicap': 1.5,
+    'html': '<div id="styles" class="row option-list relevancy-tracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>'
+});
 
 
 
@@ -21748,38 +21760,83 @@ var TrackFunctions = function () {
         value: function getDivInPosition(itemArray) {
             return new Promise(function (resolve, reject) {
                 var message = '<div>';
+                var divNames = '';
+                var handicapString = '';
+                var count = 0;
+                var domArray = [];
+
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+
+                try {
+                    for (var _iterator = itemArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var item = _step.value;
+
+                        count++;
+
+                        divNames += item["name"];
+                        handicapString += item["handicap"];
+
+                        //check for more
+                        if (count < itemArray.length) {
+                            divNames += ',';
+                            handicapString += ',';
+                        }
+                        domArray[item["name"]] = {};
+                        domArray[item["name"]]["html"] = item["html"];
+                        domArray[item["name"]]["handicap"] = item["handicap"];
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
 
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/getRelevancy', {
                     params: {
-                        page_name: "/music"
+                        page_name: "/music",
+                        item_array: divNames,
+                        handicap: handicapString
                     }
                 }).then(function (response) {
-                    var _iteratorNormalCompletion = true;
-                    var _didIteratorError = false;
-                    var _iteratorError = undefined;
+                    console.log(response);
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
 
                     try {
-                        for (var _iterator = response["data"][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var div = _step.value;
+                        for (var _iterator2 = response["data"][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var div = _step2.value;
 
-                            if (itemArray[div["name"]] != '') {
-                                message += itemArray[div["name"]];
-                                console.log(response["data"]);
+                            if (domArray[div["name"]] != '') {
+
+                                console.log(domArray, div);
+                                message += domArray[div["name"]]["html"];
 
                                 window.Relevancy.eventListeners();
                             }
                         }
                     } catch (err) {
-                        _didIteratorError = true;
-                        _iteratorError = err;
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                                _iterator.return();
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
                             }
                         } finally {
-                            if (_didIteratorError) {
-                                throw _iteratorError;
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
                             }
                         }
                     }
@@ -21826,7 +21883,7 @@ var Relevancy = function () {
                 writeRelevancyNumber();
             }
         }, 3000);
-        var matches = document.body.querySelectorAll('.wesleytracker');
+        var matches = document.body.querySelectorAll('.relevancy-tracker');
 
         matches.forEach(function (value) {
             trackedDivs.push(value);
@@ -21838,7 +21895,7 @@ var Relevancy = function () {
     _createClass(Relevancy, [{
         key: 'eventListeners',
         value: function eventListeners() {
-            var matches = document.body.querySelectorAll('.wesleytracker');
+            var matches = document.body.querySelectorAll('.relevancy-tracker');
             trackedDivs = [];
 
             matches.forEach(function (value) {
@@ -21873,12 +21930,12 @@ var Relevancy = function () {
     }, {
         key: 'updateEventListeners',
         value: function updateEventListeners() {
-            var matches = document.body.querySelectorAll('.wesleytracker');
+            var matches = document.body.querySelectorAll('.relevancy-tracker');
             trackedDivs = [];
             var that = this;
 
             var domCheck = setInterval(function () {
-                var mat = document.body.querySelectorAll('.wesleytracker');
+                var mat = document.body.querySelectorAll('.relevancy-tracker');
                 if (mat.length > 0) {
                     that.eventListeners();
                     clearInterval(domCheck);
@@ -41553,7 +41610,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _vm._m(0)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container wesleytracker"
+    staticClass: "container relevancy-tracker"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -41576,15 +41633,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _vm._m(0)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "row option-list wesleytracker",
+    staticClass: "row option-list relevancy-tracker",
     attrs: {
-      "id": "styles"
+      "id": "music_styles"
     }
   }, [_c('div', {
     staticClass: "col-xs-6 item"
-  }, [_vm._v("Funk")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Rock")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-6 item"
-  }, [_vm._v("Soul")])])
+  }, [_vm._v("Metal")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -41660,7 +41717,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
-  }, [_c('h1', [_vm._v("title")]), _vm._v(" "), _c('tracked-divs')], 1)
+  }, [_c('h1', [_vm._v("Music page")]), _vm._v(" "), _c('tracked-divs')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

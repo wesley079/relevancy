@@ -9,6 +9,28 @@ class DataController extends Controller
 {
     public function getRelevancy()
     {
+        //get items
+        $itemArray = explode(",", $_GET["item_array"]);
+        $handicap = explode(",", $_GET["handicap"]);
+
+        $handicapArray = [];
+
+        //check for new items
+        foreach ($itemArray as $index => $item){
+            $handicapArray[$item] = $handicap[$index];
+            $made = DB::table('relevancies')
+                ->select('*')
+                ->where([
+                    ['div_id', '=', $item],
+                    ['page', '=', $_GET["page_name"]],
+                    ['ip_address', '=', $_SERVER['REMOTE_ADDR']]
+                ])->first();
+
+            if($made === null){
+                $this->createItem($item, $_GET["page_name"]);
+            }
+        }
+
         $array = [];
 
         $dataArray = DB::table('relevancies')
@@ -18,7 +40,8 @@ class DataController extends Controller
             ])->get();
 
         foreach($dataArray as $data){
-            $array[$data->div_id]["score"] = $data->score;
+            $handicapNumber = $handicapArray[$data->div_id];
+            $array[$data->div_id]["score"] = $handicapNumber * $data->score;
             $array[$data->div_id]["name"]  = $data->div_id;
         }
         sort($array);
@@ -32,7 +55,7 @@ class DataController extends Controller
         $data = Relevancy::where('div_id', '=', $_GET["div_id"]);
         if ($data === null) {
             //non existing, create item
-            $this->createItem($_GET["div_id"]);
+            $this->createItem($_GET["div_id"], $_GET["page"]);
         }
         else if($data){
             //get current div
@@ -81,7 +104,7 @@ class DataController extends Controller
                 'div_id'            => $divName,
                 'ip_address'        => $_SERVER['REMOTE_ADDR'],
                 'page'              => $page,
-                'score'             => 1,
+                'score'             => 0,
                 'created_at'        => date("Y-m-d H:i:s"),
                 'updated_at'        => date("Y-m-d H:i:s")
 
