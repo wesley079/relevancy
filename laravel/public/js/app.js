@@ -21529,37 +21529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {};
-    },
-
-    methods: {
-        say: function say(msg, event) {
-            alert(msg);
-        },
-        getFirstComponent: function getFirstComponent() {
-            return;
-        }
-    }
-
-});
-
-/***/ }),
+/* 33 */,
 /* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -21567,9 +21537,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InputComponent_vue__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InputComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__InputComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__trackFunctions_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Funk_vue__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Funk_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Funk_vue__);
 //
 //
 //
@@ -21577,6 +21547,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+//basic imports
+
+
+
+//extra imports
+
 
 var itemArray = [];
 itemArray.push({
@@ -21592,25 +21569,18 @@ itemArray.push({
 itemArray.push({
     'name': 'styles',
     'handicap': 1.5,
-    'html': '<div id="styles" class="row option-list relevancy-tracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>'
+    'html': '<div id="styles" class="row option-list relevancy-tracker"></div>'
 });
-
-
-
-
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs', {
     template: '<div v-html="itemsHtml"></div>',
     data: function data() {
         return {
             itemsHtml: ''
-
         };
     },
     beforeCreate: function beforeCreate() {
-        this.divOrder = ["submenu", "featured", "styles", "submenu"];
-
-        var trackedFunctions = new __WEBPACK_IMPORTED_MODULE_2__trackFunctions_js__["a" /* TrackFunctions */]();
+        var trackedFunctions = new __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__["a" /* TrackFunctions */]();
         trackedFunctions.getDivInPosition(itemArray).then(function (response) {
             this.itemsHtml = response;
         }.bind(this), function (error) {
@@ -21619,7 +21589,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs', {
     },
     afterCreate: function afterCreate() {},
     mounted: function mounted() {
-        window.Relevancy.updateEventListeners();console.log('done');
+        window.Relevancy.updateEventListeners();
+        window.Relevancy.registerAmount(itemArray.length);
     }
 });
 
@@ -21637,7 +21608,22 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs', {
         }
 
     }
+
 });
+
+var domCheck = setInterval(function () {
+    var mat = document.body.querySelectorAll('#styles');
+    if (mat.length > 0) {
+        clearInterval(domCheck);
+
+        new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+            components: {
+                funkComponent: __WEBPACK_IMPORTED_MODULE_2__components_Funk_vue___default.a
+            },
+            template: '\n                    <div id="styles" class="row option-list relevancy-tracker">\n                     <funkComponent></funkComponent>\n                     </div>\n                 '
+        }).$mount('#styles');
+    }
+}, 100);
 
 /***/ }),
 /* 35 */
@@ -21809,7 +21795,6 @@ var TrackFunctions = function () {
                         handicap: handicapString
                     }
                 }).then(function (response) {
-                    console.log(response);
                     var _iteratorNormalCompletion2 = true;
                     var _didIteratorError2 = false;
                     var _iteratorError2 = undefined;
@@ -21820,7 +21805,6 @@ var TrackFunctions = function () {
 
                             if (domArray[div["name"]] != '') {
 
-                                console.log(domArray, div);
                                 message += domArray[div["name"]]["html"];
 
                                 window.Relevancy.eventListeners();
@@ -21871,15 +21855,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 var trackedDivs = [];
-var currentDiv = '';
+var currentDivs = [];
+var eventAmount = 0;
 
 var Relevancy = function () {
     function Relevancy() {
         _classCallCheck(this, Relevancy);
 
         window.setInterval(function () {
-            if (currentDiv != '') {
-                console.log(currentDiv, 1);
+            if (currentDivs.length > 0) {
                 writeRelevancyNumber();
             }
         }, 3000);
@@ -21928,6 +21912,11 @@ var Relevancy = function () {
             }
         }
     }, {
+        key: 'registerAmount',
+        value: function registerAmount(int) {
+            eventAmount += parseInt(int);
+        }
+    }, {
         key: 'updateEventListeners',
         value: function updateEventListeners() {
             var matches = document.body.querySelectorAll('.relevancy-tracker');
@@ -21936,7 +21925,8 @@ var Relevancy = function () {
 
             var domCheck = setInterval(function () {
                 var mat = document.body.querySelectorAll('.relevancy-tracker');
-                if (mat.length > 0) {
+
+                if (mat.length >= eventAmount) {
                     that.eventListeners();
                     clearInterval(domCheck);
                 }
@@ -21945,12 +21935,27 @@ var Relevancy = function () {
     }, {
         key: 'trackElement',
         value: function trackElement() {
-            if (currentDiv !== this.id) {
-                currentDiv = this.id;
+            if (!currentDivs.includes(this.id)) {
+                currentDivs.push(this.id);
             }
 
             this.addEventListener("mouseout", function (event) {
-                currentDiv = '';
+
+                Array.prototype.remove = function () {
+                    var what = void 0,
+                        a = arguments,
+                        L = a.length,
+                        ax = void 0;
+                    while (L && this.length) {
+                        what = a[--L];
+                        while ((ax = this.indexOf(what)) !== -1) {
+                            this.splice(ax, 1);
+                        }
+                    }
+                    return this;
+                };
+
+                currentDivs.remove(this.id);
             });
         }
     }, {
@@ -21961,14 +21966,9 @@ var Relevancy = function () {
                     page_name: "/music"
                 }
             }).then(function (response) {
-                console.log(response['data']);
-
                 return response;
             }).catch(function (error) {});
         }
-    }], [{
-        key: 'getDivPosition',
-        value: function getDivPosition() {}
     }]);
 
     return Relevancy;
@@ -21977,17 +21977,40 @@ var Relevancy = function () {
 
 
 function writeRelevancyNumber() {
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/postRelevancy', {
-        params: {
-            div_id: currentDiv,
-            page_name: "/music"
+    try {
+
+        for (var _iterator2 = currentDivs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var currentDiv = _step2.value;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/postRelevancy', {
+                params: {
+                    div_id: currentDiv,
+                    page_name: "/music"
+                }
+            }).then(function (response) {
+                //done
+            }).catch(function (error) {
+                //error
+            });
         }
-    }).then(function (response) {
-        console.log(response);
-    }).catch(function (error) {
-        console.log(error);
-    });
+    } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                _iterator2.return();
+            }
+        } finally {
+            if (_didIteratorError2) {
+                throw _iteratorError2;
+            }
+        }
+    }
 }
 
 /***/ }),
@@ -41501,40 +41524,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(3)(
-  /* script */
-  __webpack_require__(33),
-  /* template */
-  __webpack_require__(46),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\school\\relevancy-api\\laravel\\resources\\assets\\js\\components\\InputComponent.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] InputComponent.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-49dbecf4", Component.options)
-  } else {
-    hotAPI.reload("data-v-49dbecf4", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 42 */,
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41626,32 +41616,7 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "row option-list relevancy-tracker",
-    attrs: {
-      "id": "music_styles"
-    }
-  }, [_c('div', {
-    staticClass: "col-xs-6 item"
-  }, [_vm._v("Rock")]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6 item"
-  }, [_vm._v("Metal")])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-49dbecf4", module.exports)
-  }
-}
-
-/***/ }),
+/* 46 */,
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44172,6 +44137,132 @@ if (inBrowser && window.Vue) {
 __webpack_require__(13);
 module.exports = __webpack_require__(14);
 
+
+/***/ }),
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__ = __webpack_require__(37);
+//
+//
+//
+//
+
+var itemArray = [];
+itemArray.push({
+    'name': 'funk',
+    'handicap': 1,
+    'html': '<div id="funk" class="col-xs-6 item relevancy-tracker">Funk</div>'
+});
+itemArray.push({
+    'name': 'soul',
+    'handicap': 1,
+    'html': '<div id="soul" class="col-xs-6 item relevancy-tracker">Soul</div>'
+});
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs2', {
+    template: '<div v-html="itemsHtml"></div>',
+    data: function data() {
+        return {
+            itemsHtml: ''
+
+        };
+    },
+    beforeCreate: function beforeCreate() {
+
+        var trackedFunctions = new __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__["a" /* TrackFunctions */]();
+        trackedFunctions.getDivInPosition(itemArray).then(function (response) {
+            this.itemsHtml = response;
+        }.bind(this), function (error) {
+            console.log('promise error', error);
+        });
+    },
+    afterCreate: function afterCreate() {},
+    mounted: function mounted() {
+        window.Relevancy.registerAmount(itemArray.length);
+        window.Relevancy.updateEventListeners();
+    }
+});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            transitionName: 'slide-left',
+            pageTitle: 'Music'
+        };
+    },
+
+    methods: {
+        say: function say(msg, event) {
+            alert(msg);
+        }
+
+    }
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(62),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\school\\relevancy-api\\laravel\\resources\\assets\\js\\components\\components\\Funk.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Funk.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b7c7ffd8", Component.options)
+  } else {
+    hotAPI.reload("data-v-b7c7ffd8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tracked-divs2')
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b7c7ffd8", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

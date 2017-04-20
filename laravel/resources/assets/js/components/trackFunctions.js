@@ -42,11 +42,9 @@ class TrackFunctions{
                 }
             })
                 .then(function (response){
-                    console.log(response);
                     for(let div of response["data"]) {
                         if (domArray[div["name"]] != '') {
 
-                            console.log(domArray, div);
                             message += domArray[div["name"]]["html"];
 
                             window.Relevancy.eventListeners();
