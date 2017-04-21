@@ -6,15 +6,15 @@
     let itemArray = [];
     itemArray.push(
         {
-            'name': 'funk',
+            'name': 'rock',
             'handicap': 1,
-            'html': '<div id="funk" class="col-xs-6 item relevancy-tracker">Funk</div>'
+            'html': '<div id="rock" class="col-xs-6 item relevancy-tracker music-item"><img src="http://www.dancetothesixties.nl/images/gifbestandjes/rock_and_roll_tekst2.gif"/></div>'
         });
     itemArray.push(
         {
-            'name': 'soul',
+            'name': 'funk',
             'handicap': 1,
-            'html': '<div id="soul" class="col-xs-6 item relevancy-tracker">Soul</div>'
+            'html': '<div id="funk" class="col-xs-6 item relevancy-tracker music-item"><img src="http://kingofwallpapers.com/funk/funk-002.jpg"/></div>'
         }
     );
 
@@ -34,7 +34,7 @@
         beforeCreate(){
 
             let trackedFunctions = new TrackFunctions();
-            trackedFunctions.getDivInPosition(itemArray).then(function(response){
+            trackedFunctions.getDivInPosition(itemArray, "/music").then(function(response){
                 this.itemsHtml = response;
 
             }.bind(this), (error) => {

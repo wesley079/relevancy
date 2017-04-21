@@ -44,7 +44,7 @@
         },
             beforeCreate(){
                 let trackedFunctions = new TrackFunctions();
-                trackedFunctions.getDivInPosition(itemArray).then(function(response){
+                trackedFunctions.getDivInPosition(itemArray, "/music").then(function(response){
                     this.itemsHtml = response;
                 }.bind(this), (error) => {
                     console.log('promise error', error);
