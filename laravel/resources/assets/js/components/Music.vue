@@ -12,6 +12,7 @@
 
     //extra imports
     import funkComponent from './components/Funk.vue';
+    import extraOptions from './components/ExtraOptions.vue';
 
     let itemArray = [];
     itemArray.push(
@@ -31,6 +32,12 @@
             'name': 'styles',
             'handicap': 1.5,
             'html': '<div id="styles" class="row option-list relevancy-tracker"></div>'
+        });
+    itemArray.push(
+        {
+            'name': 'extraOptions',
+            'handicap': 1,
+            'html': '<div id="extraOptions" class="row option-list relevancy-tracker"></div>'
         });
 
 
@@ -97,6 +104,23 @@
         }
     }, 100);
 
+    let domCheck2 = setInterval(function(){
+        let mat = document.body.querySelectorAll('#extraOptions');
+        if(mat.length > 0){
+            clearInterval(domCheck2);
+
+            new Vue({
+                components: {
+                    extraOptions
+                },
+                template: `
+                    <div id="extraOptions" class="row option-list relevancy-tracker">
+                     <extraOptions></extraOptions>
+                     </div>
+                 `
+            }).$mount('#extraOptions');
+        }
+    }, 100);
 
 
 </script>

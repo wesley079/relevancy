@@ -21660,6 +21660,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Funk_vue__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Funk_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Funk_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ExtraOptions_vue__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ExtraOptions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ExtraOptions_vue__);
 //
 //
 //
@@ -21673,6 +21675,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 //extra imports
+
 
 
 var itemArray = [];
@@ -21690,6 +21693,11 @@ itemArray.push({
     'name': 'styles',
     'handicap': 1.5,
     'html': '<div id="styles" class="row option-list relevancy-tracker"></div>'
+});
+itemArray.push({
+    'name': 'extraOptions',
+    'handicap': 1,
+    'html': '<div id="extraOptions" class="row option-list relevancy-tracker"></div>'
 });
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs', {
@@ -21742,6 +21750,20 @@ var domCheck = setInterval(function () {
             },
             template: '\n                    <div id="styles" class="row option-list relevancy-tracker">\n                     <funkComponent></funkComponent>\n                     </div>\n                 '
         }).$mount('#styles');
+    }
+}, 100);
+
+var domCheck2 = setInterval(function () {
+    var mat = document.body.querySelectorAll('#extraOptions');
+    if (mat.length > 0) {
+        clearInterval(domCheck2);
+
+        new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+            components: {
+                extraOptions: __WEBPACK_IMPORTED_MODULE_3__components_ExtraOptions_vue___default.a
+            },
+            template: '\n                    <div id="extraOptions" class="row option-list relevancy-tracker">\n                     <extraOptions></extraOptions>\n                     </div>\n                 '
+        }).$mount('#extraOptions');
     }
 }, 100);
 
@@ -44252,6 +44274,137 @@ if (inBrowser && window.Vue) {
 __webpack_require__(14);
 module.exports = __webpack_require__(15);
 
+
+/***/ }),
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__ = __webpack_require__(11);
+//
+//
+//
+//
+
+var itemArray = [];
+itemArray.push({
+    'name': 'option1',
+    'handicap': 1,
+    'html': '<div id="option1" class="col-xs-4 item relevancy-tracker music-item"><img src="http://www.mrwallpaper.com/wallpapers/Music-equipment.jpg"/></div>'
+});
+itemArray.push({
+    'name': 'option2',
+    'handicap': 1,
+    'html': '<div id="option2" class="col-xs-4 item relevancy-tracker music-item"><img src="https://bankstreetmusic.pbworks.com/f/1348250071/Music.jpeg"/></div>'
+});
+itemArray.push({
+    'name': 'option3',
+    'handicap': 1,
+    'html': '<div id="option3" class="col-xs-4 item relevancy-tracker music-item"><img src="https://static1.squarespace.com/static/55f71edde4b0b863e21d4a99/t/562faeade4b0ac7e6622145c/1445965485960/make-beats.jpg"/></div>'
+});
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tracked-divs3', {
+    template: '<div v-html="itemsHtml"></div>',
+    data: function data() {
+        return {
+            itemsHtml: ''
+
+        };
+    },
+    beforeCreate: function beforeCreate() {
+
+        var trackedFunctions = new __WEBPACK_IMPORTED_MODULE_1__trackFunctions_js__["a" /* TrackFunctions */]();
+        trackedFunctions.getDivInPosition(itemArray, "/music").then(function (response) {
+            this.itemsHtml = response;
+        }.bind(this), function (error) {
+            console.log('promise error', error);
+        });
+    },
+    afterCreate: function afterCreate() {},
+    mounted: function mounted() {
+        window.Relevancy.registerAmount(itemArray.length);
+        window.Relevancy.updateEventListeners();
+    }
+});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            transitionName: 'slide-left',
+            pageTitle: 'Music'
+        };
+    },
+
+    methods: {
+        say: function say(msg, event) {
+            alert(msg);
+        }
+
+    }
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(62),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\school\\relevancy-api\\laravel\\resources\\assets\\js\\components\\components\\ExtraOptions.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ExtraOptions.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6bac64b6", Component.options)
+  } else {
+    hotAPI.reload("data-v-6bac64b6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tracked-divs3')
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6bac64b6", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
