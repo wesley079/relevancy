@@ -40,9 +40,13 @@ class DataController extends Controller
             ])->get();
 
         foreach($dataArray as $data){
-            $handicapNumber = $handicapArray[$data->div_id];
-            $array[$data->div_id]["score"] = $handicapNumber * $data->score;
-            $array[$data->div_id]["name"]  = $data->div_id;
+            if(in_array($data->div_id, $itemArray)) {
+                $handicapNumber = $handicapArray[$data->div_id];
+
+                $array[$data->div_id]["score"] = $handicapNumber * $data->score;
+                $array[$data->div_id]["name"] = $data->div_id;
+            }
+
         }
         sort($array);
         $array = array_reverse($array);

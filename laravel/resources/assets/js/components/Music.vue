@@ -6,6 +6,14 @@
 </template>
 
 <script>
+    //basic imports
+    import Vue from 'vue';
+    import { TrackFunctions } from './trackFunctions.js';
+
+    //extra imports
+    import funkComponent from './components/Funk.vue';
+    import extraOptions from './components/ExtraOptions.vue';
+
     let itemArray = [];
     itemArray.push(
         {
@@ -23,30 +31,28 @@
         {
             'name': 'styles',
             'handicap': 1.5,
-            'html': '<div id="styles" class="row option-list relevancy-tracker"><div class="col-xs-6 item">Funk</div><div class="col-xs-6 item">Soul</div></div>'
+            'html': '<div id="styles" class="row option-list relevancy-tracker"></div>'
+        });
+    itemArray.push(
+        {
+            'name': 'extraOptions',
+            'handicap': 1,
+            'html': '<div id="extraOptions" class="row option-list relevancy-tracker"></div>'
         });
 
 
-    import Vue from 'vue';
-    import InputComponent from './InputComponent.vue';
-    import { TrackFunctions } from './trackFunctions.js';
 
     Vue.component('tracked-divs', {
         template: '<div v-html="itemsHtml"></div>',
         data() {
             return {
                 itemsHtml: '',
-
-
         }
         },
             beforeCreate(){
-                this.divOrder = [ "submenu", "featured", "styles", "submenu"];
-
                 let trackedFunctions = new TrackFunctions();
-                trackedFunctions.getDivInPosition(itemArray).then(function(response){
+                trackedFunctions.getDivInPosition(itemArray, "/music").then(function(response){
                     this.itemsHtml = response;
-
                 }.bind(this), (error) => {
                     console.log('promise error', error);
                 });
@@ -54,7 +60,9 @@
             afterCreate(){
             },
             mounted(){
-                window.Relevancy.updateEventListeners(); console.log('done');
+                window.Relevancy.updateEventListeners();
+                window.Relevancy.registerAmount(itemArray.length);
+
             },
     });
 
@@ -72,10 +80,47 @@
             },
 
         },
+
+
+
 }
 
 
+    let domCheck = setInterval(function(){
+        let mat = document.body.querySelectorAll('#styles');
+        if(mat.length > 0){
+            clearInterval(domCheck);
 
+            new Vue({
+                components: {
+                  funkComponent
+                },
+                template: `
+                    <div id="styles" class="row option-list relevancy-tracker">
+                     <funkComponent></funkComponent>
+                     </div>
+                 `
+            }).$mount('#styles');
+        }
+    }, 100);
+
+    let domCheck2 = setInterval(function(){
+        let mat = document.body.querySelectorAll('#extraOptions');
+        if(mat.length > 0){
+            clearInterval(domCheck2);
+
+            new Vue({
+                components: {
+                    extraOptions
+                },
+                template: `
+                    <div id="extraOptions" class="row option-list relevancy-tracker">
+                     <extraOptions></extraOptions>
+                     </div>
+                 `
+            }).$mount('#extraOptions');
+        }
+    }, 100);
 
 
 </script>

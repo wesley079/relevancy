@@ -1,13 +1,14 @@
 import Axios from 'axios';
 
 let trackedDivs = [];
-let currentDiv = '';
+let currentDivs = [];
+let eventAmount = 0;
 
 class Relevancy{
+
     constructor() {
         window.setInterval(function(){
-            if(currentDiv != '') {
-                console.log(currentDiv, 1);
+            if(currentDivs.length > 0) {
                 writeRelevancyNumber();
             }
         }, 3000);
@@ -21,10 +22,6 @@ class Relevancy{
         this.eventListeners();
     }
 
-    static getDivPosition(){
-
-    }
-
     eventListeners(){
         let matches = document.body.querySelectorAll('.relevancy-tracker');
         trackedDivs = [];
@@ -34,8 +31,12 @@ class Relevancy{
         });
 
         for(let trackedDiv of trackedDivs){
-            trackedDiv.addEventListener('mouseover', this.trackElement)
+            trackedDiv.addEventListener('mouseover', this.trackElement);
         }
+    }
+
+    registerAmount(int){
+        eventAmount += parseInt(int);
     }
 
     updateEventListeners(){
@@ -45,7 +46,8 @@ class Relevancy{
 
         let domCheck = setInterval(function(){
             let mat = document.body.querySelectorAll('.relevancy-tracker');
-            if(mat.length > 0){
+
+            if(mat.length >= eventAmount){
                 that.eventListeners();
                 clearInterval(domCheck);
             }
@@ -56,12 +58,24 @@ class Relevancy{
     }
 
     trackElement(){
-        if(currentDiv !== this.id) {
-            currentDiv = this.id;
+        if(!currentDivs.includes(this.id)) {
+            currentDivs.push(this.id);
         }
 
         this.addEventListener("mouseout", function( event ) {
-            currentDiv = '';
+
+            Array.prototype.remove = function() {
+                let what, a = arguments, L = a.length, ax;
+                while (L && this.length) {
+                    what = a[--L];
+                    while ((ax = this.indexOf(what)) !== -1) {
+                        this.splice(ax, 1);
+                    }
+                }
+                return this;
+            };
+
+            currentDivs.remove(this.id);
         });
         }
 
@@ -72,34 +86,29 @@ class Relevancy{
             }
         })
             .then(function (response){
-                console.log(response['data']);
-
                 return response;
             })
             .catch(function (error){
 
             });
     }
-
-
-
-
 }
 export {Relevancy};
 
 function writeRelevancyNumber(){
 
-    Axios.get('/postRelevancy', {
-        params: {
-            div_id: currentDiv,
-            page_name: "/music"
-        }
-    })
-        .then(function (response) {
-            console.log(response);
+    for(let currentDiv of currentDivs) {
+        Axios.get('/postRelevancy', {
+            params: {
+                div_id: currentDiv,
+                page_name: "/music"
+            }
         })
-        .catch(function (error) {
-            console.log(error);
-        });
-
+            .then(function (response) {
+                //done
+            })
+            .catch(function (error) {
+                //error
+            });
+    }
 }

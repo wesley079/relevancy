@@ -8,7 +8,7 @@ class TrackFunctions{
 
     }
 
-    getDivInPosition(itemArray){
+    getDivInPosition(itemArray, pageName){
         return new Promise((resolve, reject) => {
             let message = '<div>';
             let divNames = '';
@@ -36,17 +36,15 @@ class TrackFunctions{
 
             Axios.get('/getRelevancy', {
                 params: {
-                    page_name: "/music",
+                    page_name: pageName,
                     item_array: divNames,
                     handicap: handicapString
                 }
             })
                 .then(function (response){
-                    console.log(response);
                     for(let div of response["data"]) {
                         if (domArray[div["name"]] != '') {
 
-                            console.log(domArray, div);
                             message += domArray[div["name"]]["html"];
 
                             window.Relevancy.eventListeners();
